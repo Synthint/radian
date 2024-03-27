@@ -3,9 +3,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/static/htmxloader"></script>
+    <script src="/static/wsloader"></script>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "/static/three",
+            "three/stlloader": "/static/stlloader",
+            "three/orbitcontrols": "/static/orbitcontrols",
+            "three/stats": "/static/stats",
+            "three/stlexporter": "/static/stlexporter",
+            "three/gui": "/static/gui"
+          }
+        }
+    </script>
+    
     <title>Project Radian</title>
 </head>
 <body>
@@ -16,7 +31,7 @@
 
         
     <div class="container">
-        <form id='form' hx-encoding='multipart/form-data' hx-post='/api/builder/makespiral'>
+        <form id='form' hx-encoding='multipart/form-data' hx-post='/api/builder/makesolid' hx-target="#solid-container" hx-swap="outerHTML" hx-sync="closest form:abort">
             <label for="num_samples">Number of Samples</label><br>
             <input type="text" id="num_samples" name="num_samples"><br><br>
 
@@ -47,6 +62,8 @@
             </button>
         </form>
     </div>
+
+    <div id="solid-container" class="empty-container"></div>
     
     
     

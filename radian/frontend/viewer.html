@@ -1,0 +1,12 @@
+
+<script type="module">
+    import {STLViewer} from "/static/stlviewer"
+    function load_stl() {
+        console.log("Displaying Model")
+        return STLViewer("/api/download/stl/sample.wav", "model")
+    }
+    window.load_stl = load_stl;
+</script>
+<div id="model">
+    <button hx-on:click="load_stl()">Press Me</button>
+</div>

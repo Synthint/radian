@@ -23,7 +23,8 @@ def read(file: str, sample_limit=-1, custom_sample_rate = -1) -> np.ndarray:
     sample_rate, data = wavfile.read(file)
     
     try:
-        data2 = multichannel_to_one(data)
+        single_channel = multichannel_to_one(data)
+        data = single_channel
     except IndexError:
         print("Song not multichannel, skipping stage")
     

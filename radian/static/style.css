@@ -1,5 +1,5 @@
 body {
-    background: #1e1e1e;
+    background: #111111;
     display:flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -12,24 +12,28 @@ body {
   }
 
   div.container{
-    background-color: #01c9ae;
+    background-color: #e3b200;
     padding: 0 5px 3px 5px;
     color: #111111;
     letter-spacing: 1px;
     font-size: 15px;
     margin: 20px 0 10px;
-    border: 3px #006d5e solid;
+    border: 3px #c77100 solid;
     border-radius: 5px;
+  }
+
+  div.viewer{
+    all: unset;
   }
 
 
 div.titlebar {
     flex: 0 0 100%;
-    background-color: #01c9ae;
+    background-color: #e3b200;
     padding: 0 5px 3px 5px;
     color: #111111;
     margin: 20px 0 10px;
-    border: 3px #006d5e solid;
+    border: 3px #c77100 solid;
     border-radius: 5px;
     text-transform: uppercase;
     font-family:'Courier New', Courier, monospace;
@@ -37,23 +41,35 @@ div.titlebar {
     letter-spacing: 50px;
     text-align: center;
     line-height: 0%;
-    text-shadow: 2px 2px #006d5e;
+    text-shadow: 3px 3px #c77100 ;
   }
 
   button {
-    background-color: #d6e7e5;
+    background-color: #fff6c6;
     padding: 0 5px 3px 5px;
     color: #111111;
     letter-spacing: 1px;
-    font-size: 20px;
+    font-size: 25px;
     margin: 20px 0 10px;
-    border: 3px #444b4a solid;
+    border: 3px #111111 solid;
     border-radius: 5px;
   }
 
   button:hover {
-    background-color: #da0098;
-    font-size: 20px;
-    border: 3px #6d003c solid;
+    background-color: #c77100;
+    border: 3px #111111 solid;
     border-radius: 100px;
+  }
+
+  div.empty-container {
+    display: none;
+  }
+
+  a {
+    color: #111111;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 25px;
+    font-weight: bolder;
+    text-align: center;
+    text-shadow: 2px 2px #c77100 ;
   }
