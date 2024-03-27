@@ -1,0 +1,74 @@
+solid test_cube
+	facet normal 1.0 -0.0 -0.0
+	outer loop
+		vertex -5 -5 -5
+		vertex -5 -5 25
+		vertex -5 25 25
+	endloop
+	facet normal 1.0 -0.0 -0.0
+	outer loop
+		vertex -5 -5 -5
+		vertex -5 25 25
+		vertex -5 25 -5
+	endloop
+	facet normal 0.0 1.0 0.0
+	outer loop
+		vertex -5 25 -5
+		vertex -5 25 25
+		vertex 25 25 25
+	endloop
+	facet normal 0.0 1.0 0.0
+	outer loop
+		vertex -5 25 -5
+		vertex 25 25 25
+		vertex 25 25 -5
+	endloop
+	facet normal -0.0 -0.0 1.0
+	outer loop
+		vertex -5 -5 -5
+		vertex -5 25 -5
+		vertex 25 25 -5
+	endloop
+	facet normal -0.0 -0.0 1.0
+	outer loop
+		vertex -5 -5 -5
+		vertex 25 25 -5
+		vertex 25 -5 -5
+	endloop
+	facet normal -0.0 1.0 -0.0
+	outer loop
+		vertex -5 -5 -5
+		vertex 25 -5 -5
+		vertex 25 -5 25
+	endloop
+	facet normal -0.0 1.0 -0.0
+	outer loop
+		vertex -5 -5 -5
+		vertex 25 -5 25
+		vertex -5 -5 25
+	endloop
+	facet normal 1.0 0.0 0.0
+	outer loop
+		vertex 25 25 -5
+		vertex 25 -5 25
+		vertex 25 -5 -5
+	endloop
+	facet normal 1.0 0.0 0.0
+	outer loop
+		vertex 25 -5 25
+		vertex 25 25 -5
+		vertex 25 25 25
+	endloop
+	facet normal 0.0 0.0 1.0
+	outer loop
+		vertex -5 -5 25
+		vertex 25 -5 25
+		vertex -5 25 25
+	endloop
+	facet normal 0.0 0.0 1.0
+	outer loop
+		vertex 25 -5 25
+		vertex 25 25 25
+		vertex -5 25 25
+	endloop
+endsolid test_cube

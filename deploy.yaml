@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: radian
+  labels:
+    app: radian
+spec:
+  containers:
+  - name: radian-container
+    image: cerosyn/radian:dev
+    ports:
+    - containerPort: 80

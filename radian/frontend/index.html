@@ -1,0 +1,54 @@
+
+<!-- Include HTMX from a CDN -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/static/htmxloader"></script>
+    <title>Project Radian</title>
+</head>
+<body>
+    <style hx-get="/static/cssloader" hx-swap="innerHTML" hx-trigger="load"></style>
+    <div class="titlebar">
+        <h1 class="titlebar">Project Radian</h1>
+    </div>
+
+        
+    <div class="container">
+        <form id='form' hx-encoding='multipart/form-data' hx-post='/api/builder/makespiral'>
+            <label for="num_samples">Number of Samples</label><br>
+            <input type="text" id="num_samples" name="num_samples"><br><br>
+
+            <label for="sample_rate">Sample Rate</label><br>
+            <input type="text" id="sample_rate" name="sample_rate"><br><br>
+
+            <label for="sides">Sides</label><br>
+            <input type="text" id="sides" name="sides"><br><br>
+
+            <label for="r_scale">Radial Scale</label><br>
+            <input type="text" id="r_scale" name="r_scale"><br><br>
+
+            <label for="core">Core Diameter</label><br>
+            <input type="text" id="core" name="core"><br><br>
+
+            <label for="z_scale">Height Scale</label><br>
+            <input type="text" id="z_scale" name="z_scale"><br><br>
+
+            <P>Build Shape</P>
+            <input type="radio" id="cylinder" name="build_mode" value="Cylinder">
+            <label for="cylinder">Cylinder</label><br>
+            <input type="radio" id="spiral" name="build_mode" value="Spiral">
+            <label for="spiral">spiral</label><br><br>
+
+            <input type='file' name='file'>
+            <button>
+                Submit
+            </button>
+        </form>
+    </div>
+    
+    
+    
+</body>
+</html>

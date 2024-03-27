@@ -1,0 +1,10 @@
+services:
+  parsec:
+    image: radian:dev
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./radian:/opt/radian
