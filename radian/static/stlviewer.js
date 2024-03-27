@@ -1,160 +1,157 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
-			import Stats from 'three/stats';
+import Stats from "three/stats";
 
-			import { STLLoader } from 'three/stlloader';
+import { STLLoader } from "three/stlloader";
 
-export function STLViewer(stl_model, elem_id){
-    let container, stats;
+export function STLViewer(stl_model, elem_id) {
+  let container, stats;
 
-			let camera, cameraTarget, scene, renderer;
+  let camera, cameraTarget, scene, renderer;
 
-			init();
-			animate();
+  init();
+  animate();
 
-			function init() {
-                
-                let model_elem = document.getElementById(elem_id)
-				let container = document.createElement( 'div' );
-                container.classList.add("viewer")
-				model_elem.parentNode.replaceChild( container, model_elem );
+  function init() {
+    let model_elem = document.getElementById(elem_id);
+    let container = document.createElement("div");
+    container.classList.add("viewer");
+    model_elem.parentNode.replaceChild(container, model_elem);
 
-				camera = new THREE.PerspectiveCamera( 35, (window.innerWidth / 2) / (window.innerHeight), 1, 15 );
-				camera.position.set( 3, 0.15, 3 );
+    camera = new THREE.PerspectiveCamera(
+      35,
+      window.innerWidth / 2 / window.innerHeight,
+      1,
+      15
+    );
+    camera.position.set(3, 0.15, 3);
 
-				cameraTarget = new THREE.Vector3( 0, - 0.25, 0 );
+    cameraTarget = new THREE.Vector3(0, -0.25, 0);
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0x72645b );
-				scene.fog = new THREE.Fog( 0x72645b, 2, 15 );
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x72645b);
+    scene.fog = new THREE.Fog(0x72645b, 2, 15);
 
-				// Ground
+    // Ground
 
-				const plane = new THREE.Mesh(
-					new THREE.PlaneGeometry( 40, 40 ),
-					new THREE.MeshPhongMaterial( { color: 0xcbcbcb, specular: 0x474747 } )
-				);
-				plane.rotation.x = - Math.PI / 2;
-				plane.position.y = - 0.5;
-				scene.add( plane );
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(40, 40),
+      new THREE.MeshPhongMaterial({ color: 0xcbcbcb, specular: 0x474747 })
+    );
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = -0.5;
+    scene.add(plane);
 
-				plane.receiveShadow = true;
+    plane.receiveShadow = true;
 
+    // ASCII file
 
-				// ASCII file
+    const loader = new STLLoader();
+    loader.load(stl_model, function (geometry) {
+      const material = new THREE.MeshPhongMaterial({
+        color: 0xff9c7c,
+        specular: 0x494949,
+        shininess: 200,
+      });
+      const mesh = new THREE.Mesh(geometry, material);
 
-				const loader = new STLLoader();
-				loader.load( stl_model, function ( geometry ) {
+      mesh.position.set(0, -0.25, 0.6);
+      mesh.rotation.set(0, -Math.PI / 2, 0);
+      mesh.scale.set(0.5, 0.5, 0.5);
 
-					const material = new THREE.MeshPhongMaterial( { color: 0xff9c7c, specular: 0x494949, shininess: 200 } );
-					const mesh = new THREE.Mesh( geometry, material );
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
 
-					mesh.position.set( 0, - 0.25, 0.6 );
-					mesh.rotation.set( 0, - Math.PI / 2, 0 );
-					mesh.scale.set( 0.5, 0.5, 0.5 );
+      scene.add(mesh);
+    });
 
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
+    // Binary files
 
-					scene.add( mesh );
+    const material = new THREE.MeshPhongMaterial({
+      color: 0xd5d5d5,
+      specular: 0x494949,
+      shininess: 200,
+    });
 
-				} );
+    loader.load(stl_model, function (geometry) {
+      const mesh = new THREE.Mesh(geometry, material);
 
+      mesh.position.set(0, -0.37, -0.6);
+      mesh.rotation.set(-Math.PI / 2, 0, 0);
+      mesh.scale.set(2, 2, 2);
 
-				// Binary files
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
 
-				const material = new THREE.MeshPhongMaterial( { color: 0xd5d5d5, specular: 0x494949, shininess: 200 } );
+      scene.add(mesh);
+    });
+    // Lights
 
-				loader.load( stl_model, function ( geometry ) {
+    scene.add(new THREE.HemisphereLight(0x8d7c7c, 0x494966, 3));
 
-					const mesh = new THREE.Mesh( geometry, material );
+    addShadowedLight(1, 1, 1, 0xffffff, 3.5);
+    addShadowedLight(0.5, 1, -1, 0xffd500, 3);
+    // renderer
 
-					mesh.position.set( 0, - 0.37, - 0.6 );
-					mesh.rotation.set( - Math.PI / 2, 0, 0 );
-					mesh.scale.set( 2, 2, 2 );
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth / 2, window.innerHeight);
 
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
+    renderer.shadowMap.enabled = true;
 
-					scene.add( mesh );
+    container.appendChild(renderer.domElement);
 
-				} );
-				// Lights
+    // stats
 
-				scene.add( new THREE.HemisphereLight( 0x8d7c7c, 0x494966, 3 ) );
+    stats = new Stats();
+    container.appendChild(stats.dom);
 
-				addShadowedLight( 1, 1, 1, 0xffffff, 3.5 );
-				addShadowedLight( 0.5, 1, - 1, 0xffd500, 3 );
-				// renderer
+    //
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth / 2, window.innerHeight);
+    window.addEventListener("resize", onWindowResize);
+  }
 
-				renderer.shadowMap.enabled = true;
+  function addShadowedLight(x, y, z, color, intensity) {
+    const directionalLight = new THREE.DirectionalLight(color, intensity);
+    directionalLight.position.set(x, y, z);
+    scene.add(directionalLight);
 
-				container.appendChild( renderer.domElement );
+    directionalLight.castShadow = true;
 
-				// stats
+    const d = 1;
+    directionalLight.shadow.camera.left = -d;
+    directionalLight.shadow.camera.right = d;
+    directionalLight.shadow.camera.top = d;
+    directionalLight.shadow.camera.bottom = -d;
 
-				stats = new Stats();
-				container.appendChild( stats.dom );
+    directionalLight.shadow.camera.near = 1;
+    directionalLight.shadow.camera.far = 4;
 
-				//
+    directionalLight.shadow.bias = -0.002;
+  }
 
-				window.addEventListener( 'resize', onWindowResize );
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / 2 / window.innerHeight;
+    camera.updateProjectionMatrix();
 
-			}
+    renderer.setSize(window.innerWidth / 2, window.innerHeight);
+  }
 
-			function addShadowedLight( x, y, z, color, intensity ) {
+  function animate() {
+    requestAnimationFrame(animate);
 
-				const directionalLight = new THREE.DirectionalLight( color, intensity );
-				directionalLight.position.set( x, y, z );
-				scene.add( directionalLight );
+    render();
+    stats.update();
+  }
 
-				directionalLight.castShadow = true;
+  function render() {
+    const timer = Date.now() * 0.0005;
 
-				const d = 1;
-				directionalLight.shadow.camera.left = - d;
-				directionalLight.shadow.camera.right = d;
-				directionalLight.shadow.camera.top = d;
-				directionalLight.shadow.camera.bottom = - d;
+    camera.position.x = Math.cos(timer) * 3;
+    camera.position.z = Math.sin(timer) * 3;
 
-				directionalLight.shadow.camera.near = 1;
-				directionalLight.shadow.camera.far = 4;
+    camera.lookAt(cameraTarget);
 
-				directionalLight.shadow.bias = - 0.002;
-
-			}
-
-			function onWindowResize() {
-
-				camera.aspect = (window.innerWidth / 2) / (window.innerHeight);
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth / 2, window.innerHeight);
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				render();
-				stats.update();
-
-			}
-
-			function render() {
-
-				const timer = Date.now() * 0.0005;
-
-				camera.position.x = Math.cos( timer ) * 3;
-				camera.position.z = Math.sin( timer ) * 3;
-
-				camera.lookAt( cameraTarget );
-
-				renderer.render( scene, camera );
-
-			}
+    renderer.render(scene, camera);
+  }
 }
