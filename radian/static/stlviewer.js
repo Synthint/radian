@@ -4,49 +4,62 @@ import Stats from "three/stats";
 
 import { STLLoader } from "three/stlloader";
 
+import { OrbitControls } from "three/orbitcontrols"
+
 export function STLViewer(stl_model, elem_id) {
-  let container, stats;
 
-  let camera, cameraTarget, scene, renderer;
+  let scene, camera, renderer, container;
 
-  init();
+  init(stl_model, elem_id);
   animate();
 
-  function init() {
-    let model_elem = document.getElementById(elem_id);
-    let container = document.createElement("div");
-    container.classList.add("viewer");
-    model_elem.parentNode.replaceChild(container, model_elem);
+  function init(stl_model, elem_id) {
 
-    camera = new THREE.PerspectiveCamera(
-      35,
-      window.innerWidth / 2 / window.innerHeight,
-      1,
-      15
-    );
-    camera.position.set(3, 0.15, 3);
+    container = document.createElement('div');
+    let model_elem = document.getElementById(elem_id)
+    model_elem.parentNode.replaceChild(container, model_elem)
 
-    cameraTarget = new THREE.Vector3(0, -0.25, 0);
+    camera = new THREE.PerspectiveCamera(45, (window.innerWidth / 2) / window.innerHeight, 0.1, 100);
+    camera.position.set(4, 2, 4);
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x72645b);
-    scene.fog = new THREE.Fog(0x72645b, 2, 15);
+    scene.background = new THREE.Color(0xa0a0a0);
+    //scene.fog = new THREE.Fog(0xa0a0a0, 4, 20);
 
-    // Ground
 
-    const plane = new THREE.Mesh(
-      new THREE.PlaneGeometry(40, 40),
-      new THREE.MeshPhongMaterial({ color: 0xcbcbcb, specular: 0x474747 })
-    );
-    plane.rotation.x = -Math.PI / 2;
-    plane.position.y = -0.5;
-    scene.add(plane);
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
+    hemiLight.position.set(0, 20, 0);
+    scene.add(hemiLight);
 
-    plane.receiveShadow = true;
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
+    directionalLight.position.set(0, 20, 10);
+    directionalLight.castShadow = true;
+    directionalLight.shadow.camera.top = 2;
+    directionalLight.shadow.camera.bottom = - 2;
+    directionalLight.shadow.camera.left = - 2;
+    directionalLight.shadow.camera.right = 2;
+    scene.add(directionalLight);
+    scene.add( new THREE.AmbientLight( 0xffffff, 1 ) );
 
-    // ASCII file
+    // ground
+
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshPhongMaterial({ color: 0xbbbbbb, depthWrite: false }));
+    ground.rotation.x = - Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    const grid = new THREE.GridHelper(40, 20, 0x000000, 0x000000);
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    scene.add(grid);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize((window.innerWidth / 2), window.innerHeight);
+    renderer.shadowMap.enabled = true;
 
     const loader = new STLLoader();
+    console.log("Attempting to display:", stl_model)
     loader.load(stl_model, function (geometry) {
       const material = new THREE.MeshPhongMaterial({
         color: 0xff9c7c,
@@ -55,103 +68,53 @@ export function STLViewer(stl_model, elem_id) {
       });
       const mesh = new THREE.Mesh(geometry, material);
 
-      mesh.position.set(0, -0.25, 0.6);
-      mesh.rotation.set(0, -Math.PI / 2, 0);
-      mesh.scale.set(0.5, 0.5, 0.5);
-
       mesh.castShadow = true;
       mesh.receiveShadow = true;
+      mesh.position.y = 0.5
+      console.log(geometry)
 
       scene.add(mesh);
+      renderer.render(scene, camera);
     });
+    console.log("Loaded")
 
-    // Binary files
-
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xd5d5d5,
-      specular: 0x494949,
-      shininess: 200,
-    });
-
-    loader.load(stl_model, function (geometry) {
-      const mesh = new THREE.Mesh(geometry, material);
-
-      mesh.position.set(0, -0.37, -0.6);
-      mesh.rotation.set(-Math.PI / 2, 0, 0);
-      mesh.scale.set(2, 2, 2);
-
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-
-      scene.add(mesh);
-    });
-    // Lights
-
-    scene.add(new THREE.HemisphereLight(0x8d7c7c, 0x494966, 3));
-
-    addShadowedLight(1, 1, 1, 0xffffff, 3.5);
-    addShadowedLight(0.5, 1, -1, 0xffd500, 3);
-    // renderer
-
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth / 2, window.innerHeight);
-
-    renderer.shadowMap.enabled = true;
-
+    
     container.appendChild(renderer.domElement);
-
-    // stats
-
-    stats = new Stats();
-    container.appendChild(stats.dom);
 
     //
 
-    window.addEventListener("resize", onWindowResize);
-  }
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0.5, 0);
+    controls.update();
 
-  function addShadowedLight(x, y, z, color, intensity) {
-    const directionalLight = new THREE.DirectionalLight(color, intensity);
-    directionalLight.position.set(x, y, z);
-    scene.add(directionalLight);
+    //
 
-    directionalLight.castShadow = true;
+    window.addEventListener('resize', onWindowResize);
 
-    const d = 1;
-    directionalLight.shadow.camera.left = -d;
-    directionalLight.shadow.camera.right = d;
-    directionalLight.shadow.camera.top = d;
-    directionalLight.shadow.camera.bottom = -d;
-
-    directionalLight.shadow.camera.near = 1;
-    directionalLight.shadow.camera.far = 4;
-
-    directionalLight.shadow.bias = -0.002;
   }
 
   function onWindowResize() {
-    camera.aspect = window.innerWidth / 2 / window.innerHeight;
-    camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth / 2, window.innerHeight);
+    camera.aspect = (window.innerWidth / 2) / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize((window.innerWidth / 2), window.innerHeight);
+
   }
 
   function animate() {
     requestAnimationFrame(animate);
-
-    render();
-    stats.update();
-  }
-
-  function render() {
-    const timer = Date.now() * 0.0005;
-
-    camera.position.x = Math.cos(timer) * 3;
-    camera.position.z = Math.sin(timer) * 3;
-
-    camera.lookAt(cameraTarget);
-
     renderer.render(scene, camera);
   }
+
+
 }
+
+
+
+
+
+
+
+
+
+

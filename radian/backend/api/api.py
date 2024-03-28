@@ -9,32 +9,34 @@ router = APIRouter(prefix="/api", tags=["api"])
 
 @router.post("/builder/makesolid", response_class=HTMLResponse)
 def make_spiral(file: UploadFile) -> Response:
+
     try:
+        stl_file= f"{file.filename[:-4]}.stl"
         file_path = f"/tmp/{file.filename}"
-        save_path = f"/tmp/{file.filename}.stl"
+        save_path = f"/tmp/{stl_file}"
         with open(file_path, "wb") as f:
             f.write(file.file.read())
             print("file written")
-        wav = musiclib.read(file_path, custom_sample_rate=200)
+        wav = musiclib.read(file_path, custom_sample_rate=600)
         print("wav ingested")
         spiral = builder.wav_to_spiral(
             samples=wav,
-            sides=20, 
-            scale = 3,
-            core = 2,
+            sides=6, 
+            scale = 2,
+            core = 20,
             )
         print("spiral mapped")
-        cyl: solid = builder.stitch_cylinder(spiral, z_scale= 0.1)
+        cyl: solid = builder.stitch_cylinder(spiral, z_scale= 1)
         print("solid assembled")
-        cyl.save_ascii(f"{file.filename}", save_path)
-        print("solid saved")
-
+        cyl.save_ascii(f"{stl_file}", save_path)
+        print(f"solid saved: {stl_file}")
         ret_msg = f"""
             <div  class="container"> 
-                <a href="/api/download/stl/{file.filename}">Download STL</a>
-                <div hx-get="/viewer/{file.filename}" hx-trigger="load" hx-swap="outerHTML" style="width: 500px; height: 500px" ></div>
+                <a href="/api/download/stl/{stl_file}">Download STL</a>
+                <div hx-get="/viewer/{stl_file}" hx-trigger="load" hx-swap="outerHTML" style="width: 500px; height: 500px" ></div>
             </div>
         """
+        print()
     except Exception as e:
         print(e)
         ret_msg = f"""
@@ -47,8 +49,7 @@ def make_spiral(file: UploadFile) -> Response:
 @router.get("/download/stl/{filename}", response_class=HTMLResponse)
 def make_spiral(filename) -> Response:
     try:
-        return FileResponse(f"/tmp/{filename}.stl", media_type='application/octet-stream',filename=f"{filename}.stl")
+        return FileResponse(f"/opt/radian/static/{filename}", media_type='application/octet-stream',filename=f"{filename}")
     except Exception as e:
         print(e)
-        ret_msg = f"ERROR: {e}"
-        return HTMLResponse(content=ret_msg)
+        
