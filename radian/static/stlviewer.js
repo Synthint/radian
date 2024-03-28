@@ -1,7 +1,5 @@
 import * as THREE from "three";
 
-import Stats from "three/stats";
-
 import { STLLoader } from "three/stlloader";
 
 import { OrbitControls } from "three/orbitcontrols"
