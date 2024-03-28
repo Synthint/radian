@@ -3,7 +3,7 @@
     import {STLViewer} from "/static/stlviewer.js"
     function load_stl() {
         console.log("Displaying Model")
-        return STLViewer("/tmp/sample.stl", "model")
+        return STLViewer("{{ filename }}", "model")
     }
     window.load_stl = load_stl;
 </script>

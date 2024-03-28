@@ -1,5 +1,5 @@
 services:
-  parsec:
+  radian:
     image: radian:dev
     build:
       context: ./

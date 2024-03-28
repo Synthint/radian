@@ -19,7 +19,7 @@ export function STLViewer(stl_model, elem_id) {
     let model_elem = document.getElementById(elem_id)
     model_elem.parentNode.replaceChild(container, model_elem)
 
-    camera = new THREE.PerspectiveCamera(45, (window.innerWidth / 2) / (window.innerHeight / 2), 0.1, 100);
+    camera = new THREE.PerspectiveCamera(45, (window.innerWidth / 1.25) / (window.innerHeight / 1.5), 0.1, 100);
     camera.position.set(-30, 30, -30);
     camera.lookAt(0, 10, 0)
 
@@ -55,7 +55,7 @@ export function STLViewer(stl_model, elem_id) {
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize((window.innerWidth / 2), (window.innerHeight / 2));
+    renderer.setSize((window.innerWidth / 1.25), (window.innerHeight / 1.5));
     renderer.shadowMap.enabled = true;
 
     const loader = new STLLoader();
@@ -98,9 +98,9 @@ export function STLViewer(stl_model, elem_id) {
 
   function onWindowResize() {
 
-    camera.aspect = (window.innerWidth / 2) / (window.innerHeight / 2);
+    camera.aspect = (window.innerWidth / 1.25) / (window.innerHeight / 1.5);
     camera.updateProjectionMatrix();
-    renderer.setSize((window.innerWidth / 2), (window.innerHeight / 2));
+    renderer.setSize((window.innerWidth / 1.25), (window.innerHeight / 1.5));
 
   }
 

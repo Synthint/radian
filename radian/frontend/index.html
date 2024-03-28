@@ -30,7 +30,7 @@
 
         
     <div class="container">
-        <form id='form' hx-encoding='multipart/form-data' hx-post='/api/builder/makesolid' hx-target="#solid-container" hx-swap="outerHTML" hx-sync="closest form:abort">
+        <form id='form' hx-encoding='multipart/form-data' hx-post='/api/builder/makesolid' hx-swap="outerHTML" hx-sync="closest form:abort">
             <label for="num_samples">Number of Samples</label><br>
             <input type="text" id="num_samples" name="num_samples"><br>
 
@@ -53,7 +53,7 @@
             <input type="radio" id="cylinder" name="build_mode" value="Cylinder">
             <label for="cylinder">Cylinder</label><br>
             <input type="radio" id="spiral" name="build_mode" value="Spiral">
-            <label for="spiral">spiral</label><br>
+            <label for="spiral">Spiral</label><br>
 
             <input type='file' name='file'>
             <button>
@@ -61,8 +61,6 @@
             </button>
         </form>
     </div>
-
-    <div id="solid-container" class="empty-container"></div>
     
     
     
