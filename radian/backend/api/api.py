@@ -1,25 +1,34 @@
+import os
 import time
-import asyncio
 
 from typing import Annotated
-from fastapi import APIRouter, Form, Request, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, Response, JSONResponse, FileResponse
-from radian.backend.utils import tools
 from radian.backend.utils import builder, musiclib
 from radian.backend.utils.solidlib import solid
 
 
 router = APIRouter(prefix="/api", tags=["api"])
 
+def delete_file(file, delay):
+    print(f"Delete scheduled for {file} in {delay}s")
+    time.sleep(delay)
+    print(f"Deleting{file}")
+    os.remove(file)
+
+
+
+
 @router.post("/builder/makesolid", response_class=HTMLResponse)
-def make_solid(num_samples: Annotated[int, Form()],
+async def make_solid(num_samples: Annotated[int, Form()],
                 sample_rate: Annotated[int, Form()],
                 sides: Annotated[int, Form()],
                 r_scale: Annotated[int, Form()],
                 core: Annotated[int, Form()],
                 z_scale: Annotated[float, Form()],
                 build_mode: Annotated[str, Form()],
-                file: UploadFile) -> Response:
+                file: UploadFile,
+                background_tasks: BackgroundTasks) -> Response:
     
     print("Building Solid...")
     build_error = ""
@@ -73,8 +82,8 @@ def make_solid(num_samples: Annotated[int, Form()],
                 ERROR: {e}
             </div>
         """
-    asyncio.run(tools.delay_remove_file(file_path, 300))
-    asyncio.run(tools.delay_remove_file(save_path, 300))
+    background_tasks.add_task(delete_file, file_path,300)
+    background_tasks.add_task(delete_file, save_path,300)
     return HTMLResponse(content=ret_msg)
 
 
