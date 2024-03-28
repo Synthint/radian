@@ -32,28 +32,28 @@
     <div class="container">
         <form id='form' hx-encoding='multipart/form-data' hx-post='/api/builder/makesolid' hx-target="#solid-container" hx-swap="outerHTML" hx-sync="closest form:abort">
             <label for="num_samples">Number of Samples</label><br>
-            <input type="text" id="num_samples" name="num_samples"><br><br>
+            <input type="text" id="num_samples" name="num_samples"><br>
 
             <label for="sample_rate">Sample Rate</label><br>
-            <input type="text" id="sample_rate" name="sample_rate"><br><br>
+            <input type="text" id="sample_rate" name="sample_rate"><br>
 
             <label for="sides">Sides</label><br>
-            <input type="text" id="sides" name="sides"><br><br>
+            <input type="text" id="sides" name="sides"><br>
 
             <label for="r_scale">Radial Scale</label><br>
-            <input type="text" id="r_scale" name="r_scale"><br><br>
+            <input type="text" id="r_scale" name="r_scale"><br>
 
             <label for="core">Core Diameter</label><br>
-            <input type="text" id="core" name="core"><br><br>
+            <input type="text" id="core" name="core"><br>
 
             <label for="z_scale">Height Scale</label><br>
-            <input type="text" id="z_scale" name="z_scale"><br><br>
+            <input type="text" id="z_scale" name="z_scale"><br>
 
             <P>Build Shape</P>
             <input type="radio" id="cylinder" name="build_mode" value="Cylinder">
             <label for="cylinder">Cylinder</label><br>
             <input type="radio" id="spiral" name="build_mode" value="Spiral">
-            <label for="spiral">spiral</label><br><br>
+            <label for="spiral">spiral</label><br>
 
             <input type='file' name='file'>
             <button>

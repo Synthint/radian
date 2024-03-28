@@ -21,7 +21,7 @@ class triangle():
     a: point
     b: point
     c: point
-    def __init__(self, points: tuple) -> None:
+    def __init__(self, points: tuple, z_offset = 0) -> None:
         if len(points) != 3 :
             raise Exception("triangles requires exactly 3 sides")
         self.a: point = points[0]
@@ -44,7 +44,7 @@ class triangle():
         # the order should be counter-clockwise, though
         # since its viewed from a point along the z axis inside the model
         # all orderings should be made to be clockwise
-        dot = norm.dot(self.a.to_np_array() - point((0,0,self.a.z)).to_np_array()) 
+        dot = norm.dot(self.a.to_np_array() - point((0,0,self.a.z + z_offset)).to_np_array()) # wtf
         if dot < 0:
             temp: point = self.b
             self.b = self.c
@@ -55,11 +55,7 @@ class triangle():
             self.b.to_np_array() - self.a.to_np_array(),
             self.c.to_np_array() - self.a.to_np_array()
         )
-        sum = N.sum()
-        if sum > 0:
-            return N / sum
-        else:
-            return N
+        return N
 
 class solid():
     triangles: list[triangle] = []
@@ -71,8 +67,8 @@ class solid():
             f.write(f"solid {solidname}\n")
             for tri in self.triangles:
                 normals = tri.compute_normal()
-                f.write(f"\tfacet normal {normals[0]} {normals[1]} {normals[2]}\n")
                 f.write("\touter loop\n")
+                f.write(f"\t\tfacet normal {normals[0]} {normals[1]} {normals[2]}\n")
                 f.write(f"\t\tvertex {str(tri.a)}\n")
                 f.write(f"\t\tvertex {str(tri.b)}\n")
                 f.write(f"\t\tvertex {str(tri.c)}\n")

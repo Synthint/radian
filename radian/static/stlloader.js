@@ -273,13 +273,13 @@ class STLLoader extends Loader {
 
 			const geometry = new BufferGeometry();
 			const patternSolid = /solid([\s\S]*?)endsolid/g;
-			const patternFace = /facet([\s\S]*?)endfacet/g;
+			const patternFace = /outer loop([\s\S]*?)endloop/g;
 			const patternName = /solid\s(.+)/;
 			let faceCounter = 0;
 
-			const patternFloat = /[\s]+([+-]?(?:\d*)(?:\.\d*)?(?:[eE][+-]?\d+)?)/.source;
+			const patternFloat = /[\s]([+-]?(?:\d*)(?:\.\d*)?(?:[eE][+-]?\d+)?)/.source;
 			const patternVertex = new RegExp( 'vertex' + patternFloat + patternFloat + patternFloat, 'g' );
-			const patternNormal = new RegExp( 'normal' + patternFloat + patternFloat + patternFloat, 'g' );
+			const patternNormal = new RegExp( 'facet normal' + patternFloat + patternFloat + patternFloat, 'g' );
 
 			const vertices = [];
 			const normals = [];
@@ -310,7 +310,6 @@ class STLLoader extends Loader {
 					const text = result[ 0 ];
 
 					while ( ( result = patternNormal.exec( text ) ) !== null ) {
-
 						normal.x = parseFloat( result[ 1 ] );
 						normal.y = parseFloat( result[ 2 ] );
 						normal.z = parseFloat( result[ 3 ] );

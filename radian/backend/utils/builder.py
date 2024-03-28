@@ -57,7 +57,7 @@ def stitch_cylinder(cyl: np.ndarray, z_scale = 1) -> solid:
                 0
             ))
         p3 = solid.point((0,0,0))
-        tris.append(solid.triangle((p1,p2,p3)))
+        tris.append(solid.triangle((p1,p2,p3), z_offset= 1))
     # sides
     for slice in range(height-1):
         for ind in range(samples):
@@ -99,6 +99,6 @@ def stitch_cylinder(cyl: np.ndarray, z_scale = 1) -> solid:
             ))
         p3 = solid.point((0, 0, (height-1) * z_scale))
 
-        tris.append(solid.triangle((p1,p2,p3)))
+        tris.append(solid.triangle((p1,p2,p3), z_offset= -1))
 
     return solid.solid(triangles=tris)
