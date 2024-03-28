@@ -6,17 +6,16 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/static/htmxloader"></script>
-    <script src="/static/wsloader"></script>
+    <script src="/static/htmx.min.js"></script>
     <script type="importmap">
         {
           "imports": {
-            "three": "/static/three",
-            "three/stlloader": "/static/stlloader",
-            "three/orbitcontrols": "/static/orbitcontrols",
-            "three/stats": "/static/stats",
-            "three/stlexporter": "/static/stlexporter",
-            "three/gui": "/static/gui"
+            "three": "/static/three.js",
+            "three/stlloader": "/static/stlloader.js",
+            "three/orbitcontrols": "/static/orbitcontrols.js",
+            "three/stats": "/static/stats.js",
+            "three/stlexporter": "/static/stlexporter.js",
+            "three/gui": "/static/gui.js"
           }
         }
     </script>
@@ -24,7 +23,7 @@
     <title>Project Radian</title>
 </head>
 <body>
-    <style hx-get="/static/cssloader" hx-swap="innerHTML" hx-trigger="load"></style>
+    <style hx-get="/static/style.css" hx-swap="innerHTML" hx-trigger="load"></style>
     <div class="titlebar">
         <h1 class="titlebar">Project Radian</h1>
     </div>

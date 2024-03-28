@@ -400,7 +400,7 @@ class STLLoader extends Loader {
 		// start
 
 		const binData = ensureBinary( data );
-
+		console.log("bin?", isBinary( binData ))
 		return isBinary( binData ) ? parseBinary( binData ) : parseASCII( ensureString( data ) );
 
 	}

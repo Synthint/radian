@@ -1,9 +1,9 @@
 
 <script type="module">
-    import {STLViewer} from "/static/stlviewer"
+    import {STLViewer} from "/static/stlviewer.js"
     function load_stl() {
         console.log("Displaying Model")
-        return STLViewer("/api/download/stl/sample.stl", "model")
+        return STLViewer("/tmp/sample.stl", "model")
     }
     window.load_stl = load_stl;
 </script>
