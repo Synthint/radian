@@ -43,15 +43,15 @@ async def make_solid(
         build_error = "Sides Not Within Range"
 
     if r_scale < 0.5 or r_scale > 20:
-        r_scale = "Radial Scale Not Within Range"
+        build_error = "Radial Scale Not Within Range"
 
     if core < 0.5 or core > 20:
-        core = "Core Diameter Not Within Range"
+        build_error = "Core Diameter Not Within Range"
 
     if z_scale < 0.05 or z_scale > 5:
-        z_scale = "Height Scale Not Within Range"
+        build_error = "Height Scale Not Within Range"
         
-    if build_error == "":
+    if build_error != "":
             ret_msg = f"""
                 <div  class="container"> 
                     <p>ERROR: {build_error}</p>
