@@ -29,22 +29,22 @@
         
     <div class="container">
         <form id='form' hx-encoding='multipart/form-data' hx-post='/api/builder/makesolid' hx-swap="outerHTML" hx-sync="closest form:abort">
-            <label for="num_samples">Number of Samples</label><br>
+            <label for="num_samples">Number of Samples (Between 10 and 16000)</label><br>
             <input type="text" id="num_samples" name="num_samples"><br>
 
-            <label for="sample_rate">Sample Rate</label><br>
+            <label for="sample_rate">Sample Rate (Between 200 and 16000)</label><br>
             <input type="text" id="sample_rate" name="sample_rate"><br>
 
-            <label for="sides">Sides</label><br>
+            <label for="sides">Sides (Between 3 and 500)</label><br>
             <input type="text" id="sides" name="sides"><br>
 
-            <label for="r_scale">Radial Scale</label><br>
+            <label for="r_scale">Radial Scale (Between 0.5 and 20)</label><br>
             <input type="text" id="r_scale" name="r_scale"><br>
 
-            <label for="core">Core Diameter</label><br>
+            <label for="core">Core Diameter (Between 0.5 and 20)</label><br>
             <input type="text" id="core" name="core"><br>
 
-            <label for="z_scale">Height Scale</label><br>
+            <label for="z_scale">Height Scale (Between 0.05 and 5)</label><br>
             <input type="text" id="z_scale" name="z_scale"><br>
 
             <P>Build Shape</P>
@@ -52,8 +52,9 @@
             <label for="cylinder">Cylinder</label><br>
             <input type="radio" id="spiral" name="build_mode" value="Spiral">
             <label for="spiral">Spiral</label><br>
-
-            <input type='file' name='file'>
+            <P>Note: A larger number of samples increases build time</P>
+            <P>Loading Bar Coming Soon</P>
+            <input type='file' name='file' accept=".wav">
             <button>
                 Submit
             </button>
