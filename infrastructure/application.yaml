@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: radian
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:Synthint/radian.git
+    targetRevision: HEAD
+    path: ./infrastructure
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: radian
+  syncPolicy: 
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      selfHeal: true
+      prune: true
